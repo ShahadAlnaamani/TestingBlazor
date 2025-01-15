@@ -2,19 +2,31 @@
 @using System
 @using System.Diagnostics
 @using System.Threading
+@inject NavigationManager Navigation
 
 <h3>Stop Watch</h3>
 
 <p role="status"> @currentCount</p>
+@* <p role="Laps:"> @Laps[0]</p> *@
 <button class="btn btn-primary" @onclick="StartClock">Start</button>
+<button class="btn btn-primary" @onclick="AddLap">Lap</button>
 <button class="btn btn-primary" @onclick="StopClock">Stop</button>
 <button class="btn btn-primary" @onclick="ResetClock">Reset</button>
 
+<p></p>
+<h4>Laps</h4>
+<ul>
+    @foreach (var lap in Laps)
+    {
+        <li>@lap</li>
+    }
+</ul>
 
 @code {
     private string currentCount ="00:00:00.00";
     private Stopwatch stopWatch = new Stopwatch();
     bool running;
+    private List<string> Laps = new List<string>();
 
 
     private async Task StartClock()
@@ -54,6 +66,19 @@
     {
         currentCount = "00:00:00.00";
         stopWatch.Restart();
+        Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
     }
-}
+
+    private void AddLap()
+    {
+        //get time elapsed 
+        TimeSpan Lap = stopWatch.Elapsed;
+
+        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+           Lap.Hours, Lap.Minutes, Lap.Seconds,
+           Lap.Milliseconds / 10);
+
+        //print it out => list?
+        Laps.Add(elapsedTime);
+    }
 }
