@@ -3,15 +3,15 @@
 @using System.Diagnostics
 @using System.Threading
 @inject NavigationManager Navigation
-
+<MudButton/>
 <h3>Stop Watch</h3>
 
 <p role="status"> @currentCount</p>
-@* <p role="Laps:"> @Laps[0]</p> *@
-<button class="btn btn-primary" @onclick="StartClock">Start</button>
-<button class="btn btn-primary" @onclick="AddLap">Lap</button>
-<button class="btn btn-primary" @onclick="StopClock">Stop</button>
-<button class="btn btn-primary" @onclick="ResetClock">Reset</button>
+
+<button class="btn" style="background-color: #28a745; color: white;" @onclick="StartClock">Start</button>
+<button class="btn" style="background-color: #6c757d; color: white;" @onclick="AddLap">Lap</button>
+<button class="btn" style="background-color: #dc3545; color: white;" @onclick="StopClock">Stop</button>
+<button class="btn" style="background-color: #17a2b8; color: white;" @onclick="ResetClock">Reset</button>
 
 <p></p>
 <h4>Laps</h4>
