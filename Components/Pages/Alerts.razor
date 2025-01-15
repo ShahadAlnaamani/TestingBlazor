@@ -1,0 +1,56 @@
+﻿@page "/Alerts"
+
+<h3>Interactive Alerts</h3>
+
+<p>
+    <label for="alertMessage">Alert Message: </label>
+    <input id="alertMessage" @bind="alertMessage" type="text" placeholder="Enter alert message" />
+
+    <label for="alertSeverity">Alert Severity: </label>
+    <select id="alertSeverity" @bind="selectedSeverity">
+        <option value="Normal">Normal</option>
+        <option value="Info">Info</option>
+        <option value="Success">Success</option>
+        <option value="Warning">Warning</option>
+        <option value="Error">Error</option>
+    </select>
+
+    <button @onclick="ShowAlert">Show Alert</button>
+</p>
+
+<MudAlert Severity="@selectedSeverity" @bind-IsOpen="isAlertVisible">
+    @alertMessage
+</MudAlert>
+
+@code {
+    private string alertMessage = "Default message here.";
+    private Severity selectedSeverity = Severity.Info; // Default severity as Severity enum
+    private bool isAlertVisible = false;
+
+    private void ShowAlert()
+    {
+        // Show the alert when the button is clicked
+        isAlertVisible = true;
+
+        // Optionally, hide the alert after a delay
+        Task.Delay(3000).ContinueWith(_ =>
+        {
+            isAlertVisible = false;
+            InvokeAsync(StateHasChanged); // Ensure UI is updated after the delay
+        });
+    }
+
+    // This will convert the selected string to the correct Severity enum
+    private Severity GetSeverityEnum(string severity)
+    {
+        return severity switch
+        {
+            "Normal" => Severity.Normal,
+            "Info" => Severity.Info,
+            "Success" => Severity.Success,
+            "Warning" => Severity.Warning,
+            "Error" => Severity.Error,
+            _ => Severity.Info, // Default to Info if invalid value
+        };
+    }
+}
