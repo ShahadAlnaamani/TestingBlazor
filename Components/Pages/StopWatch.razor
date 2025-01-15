@@ -1,0 +1,48 @@
+﻿@page "/StopWatch"
+@using System
+@using System.Diagnostics
+@using System.Threading
+
+<h3>Stop Watch</h3>
+
+<p role="status"> @currentCount</p>
+<button class="btn btn-primary" @onclick="StartClock">Start</button>
+<button class="btn btn-primary" @onclick="StopClock">Stop</button>
+
+
+@code {
+    private string currentCount ="00:00:00.00";
+    private Stopwatch stopWatch = new Stopwatch();
+    bool running;
+
+
+    private async Task StartClock()
+    {
+        stopWatch.Start();
+        running = true;
+
+        while (running == true)
+        {
+            TimeSpan Elapsed = stopWatch.Elapsed;
+            currentCount = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+           Elapsed.Hours, Elapsed.Minutes, Elapsed.Seconds,
+           Elapsed.Milliseconds / 10);
+            await Task.Delay(100);
+        };
+    }
+
+    private void StopClock()
+    {
+        stopWatch.Stop();
+
+        // Get the elapsed time as a TimeSpan value.
+        TimeSpan currentCount = stopWatch.Elapsed;
+        running = false;
+
+        // Format and display the TimeSpan value.
+        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            currentCount.Hours, currentCount.Minutes, currentCount.Seconds,
+            currentCount.Milliseconds / 10);
+    }
+}
+}
